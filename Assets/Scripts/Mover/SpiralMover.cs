@@ -3,37 +3,42 @@ using UnityEngine;
 
 public class SpiralMover : MonoBehaviour
 {
-    [SerializeField] private AnimationCurve _radiusCurve;
-    [SerializeField] private float _speed;
+    [SerializeField] private float _speed; 
     [SerializeField] private float _radius;
-    [SerializeField] private float _rotationSpeed;
-    [SerializeField] private float _maxHeight;
+    [SerializeField] private float _radiusDecreaseSpeed;
+    [SerializeField] private float _rotationMaxSpeed;
+    [SerializeField] private float _rotationMinSpeed;
 
     public void Move(Rigidbody tornadoMovable)
     {
-        StartCoroutine(MoveRoutine(_maxHeight, tornadoMovable));
+        tornadoMovable.velocity = Vector3.zero;
+        StartCoroutine(MoveRoutine(tornadoMovable, Random.Range(_rotationMinSpeed, _rotationMaxSpeed)));
     }
 
-    private IEnumerator MoveRoutine(float targetYPosition, Rigidbody tornadoMovable)
+    private IEnumerator MoveRoutine(Rigidbody tornadoMovable, float rotationSpeed)
     {
+        float currentRadius = (transform.Vector3YZeroAxisPosition() - tornadoMovable.transform.Vector3YZeroAxisPosition()).magnitude;
         float angle = GetStartAngle(tornadoMovable.position);
         float y = tornadoMovable.position.y;
-        Vector3 currentPosition;
+        Vector3 nextPosition;
 
-        while (tornadoMovable.position.y < targetYPosition)
+        while (enabled)
         {
-            float normalizedHeight = Mathf.Clamp(transform.position.y / _maxHeight, 0, 1f);
-            float radius = _radius * _radiusCurve.Evaluate(normalizedHeight);
-            angle += _rotationSpeed * Time.deltaTime;
 
-            float x = Mathf.Cos(angle * Mathf.Deg2Rad) * radius;
-            float z = Mathf.Sin(angle * Mathf.Deg2Rad) * radius;
+            float x = Mathf.Cos(angle * Mathf.Deg2Rad) * currentRadius;
+            float z = Mathf.Sin(angle * Mathf.Deg2Rad) * currentRadius;
+            angle -= rotationSpeed * Time.deltaTime;
             y += _speed * Time.deltaTime;
 
-            currentPosition = transform.position + new Vector3(x, y, z);
-            tornadoMovable.MovePosition(currentPosition);
+
+            if (_radius < currentRadius)
+                currentRadius -= _radiusDecreaseSpeed * Time.deltaTime;
+
+            //tornadoMovable.MoveRotation(Quaternion.LookRotation(transform.Vector3YZeroAxisPosition() - tornadoMovable.transform.Vector3YZeroAxisPosition()));
+            nextPosition = new Vector3(transform.position.x + x, y, transform.position.z + z);
+            tornadoMovable.MovePosition(nextPosition);
             yield return null;
-        }        
+        }
     }
 
     private float GetStartAngle(Vector3 itemPosition)

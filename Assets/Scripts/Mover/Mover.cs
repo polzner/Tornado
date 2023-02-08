@@ -1,17 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Mover : MonoBehaviour
 {
-	[SerializeField, Range(0f, 100f)]
-	float maxSpeed = 10f;
-
-	[SerializeField, Range(0f, 100f)]
-	float maxAcceleration = 10f;
-
-	[SerializeField]
-	Rect allowedArea = new Rect(-5f, -5f, 10f, 10f);
+	[SerializeField] private Transform _camera;
+	[SerializeField] private Rigidbody _body;
+	[SerializeField, Range(0f, 100f)] float maxSpeed = 10f;
+	[SerializeField, Range(0f, 100f)] float maxAcceleration = 10f;
+	[SerializeField] Rect allowedArea = new Rect(-5f, -5f, 10f, 10f);
 
 	Vector3 velocity;
 
@@ -21,8 +16,8 @@ public class Mover : MonoBehaviour
 
 		playerInput = Vector2.ClampMagnitude(playerInput, 1f);
 
-		Vector3 desiredVelocity =
-			new Vector3(playerInput.x, 0f, playerInput.y) * maxSpeed;
+		Vector3 desiredVelocity = (_camera.forward * playerInput.y + _camera.right * playerInput.x) * maxSpeed;
+			//new Vector3(playerInput.x, 0f, playerInput.y) * maxSpeed;
 
 		float maxSpeedChange = maxAcceleration * Time.deltaTime;
 		velocity.x =
@@ -54,6 +49,6 @@ public class Mover : MonoBehaviour
 			velocity.z = 0f;
 		}
 
-		transform.position = newPosition;
+		_body.MovePosition(newPosition);
 	}
 }

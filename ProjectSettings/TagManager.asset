@@ -11,11 +11,11 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Ground
+  - TornadoMovableItem
+  - TrigeredItem
+  - Bot
+  - GravitatingObject
   - 
   - 
   - 

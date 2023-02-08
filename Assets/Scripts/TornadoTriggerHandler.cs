@@ -3,13 +3,18 @@ using UnityEngine;
 public class TornadoTriggerHandler : MonoBehaviour
 {
     [SerializeField] private SpiralMover _mover;
+    [SerializeField] private Gravitator _gravitator;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out TornadoMovableItem item))
+        if (other.gameObject.layer == Layers.GravitatingObject)
         {
-            item.GetComponent<Collider>().enabled = false;
-            _mover.Move(item.GetComponent<Rigidbody>());
+            GameObject item = other.gameObject;
+            item.gameObject.layer = Layers.TrigeredItem;
+            _gravitator.StopGravitate(item);
+            Rigidbody rigidbody = item.GetComponent<Rigidbody>();
+            rigidbody.useGravity = false;
+            _mover.Move(rigidbody);
         }
     }
 }

@@ -17,7 +17,6 @@ public class Mover : MonoBehaviour
 		playerInput = Vector2.ClampMagnitude(playerInput, 1f);
 
 		Vector3 desiredVelocity = (_camera.forward * playerInput.y + _camera.right * playerInput.x) * maxSpeed;
-			//new Vector3(playerInput.x, 0f, playerInput.y) * maxSpeed;
 
 		float maxSpeedChange = maxAcceleration * Time.deltaTime;
 		velocity.x =

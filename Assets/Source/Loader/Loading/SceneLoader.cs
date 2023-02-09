@@ -4,12 +4,12 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
-    [SerializeField] private float _timeToLoad = 1f;
-    private Animator _animator;
-    
-    private void Awake()
+    [SerializeField] private float _timeToLoad = 4f;
+    [SerializeField] private SceneLoadAnimator _animator;
+
+    private void Start()
     {
-        _animator = GetComponent<Animator>();
+        _animator.OpenScene();
     }
 
     public void LoadScene(string sceneName)
@@ -17,18 +17,9 @@ public class SceneLoader : MonoBehaviour
         StartCoroutine(AsyncLoadSceneRoutine(sceneName));
     }
 
-    private IEnumerator LoadSceneRoutine(string sceneName)
-    {
-        _animator.SetTrigger("sceneClosing");
-
-        yield return new WaitForSeconds(_timeToLoad);
-
-        SceneManager.LoadScene(sceneName);
-    }
-
     private IEnumerator AsyncLoadSceneRoutine(string sceneName)
     {
-        _animator.SetTrigger("sceneClosing");
+        _animator.CloseScene();
         yield return new WaitForSeconds(_timeToLoad);
         AsyncOperation asyncSceneLoad = SceneManager.LoadSceneAsync(sceneName);
 

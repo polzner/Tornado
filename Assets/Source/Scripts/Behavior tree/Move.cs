@@ -13,9 +13,13 @@ public class Move : Action
         if (Vector2.Distance(TargetPoint.Value.transform.Vector2Position(), transform.Vector2Position()) <= Radius)
             return TaskStatus.Success;
 
+        return TaskStatus.Running;
+    }
+
+    public override void OnFixedUpdate()
+    {
         Vector3 direction = TargetPoint.Value.transform.position - transform.position;
         direction.Normalize();
         Character.MovePosition(transform.position + (direction * MoveSpeed * Time.deltaTime));
-        return TaskStatus.Running;
     }
 }

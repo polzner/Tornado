@@ -17,12 +17,11 @@ public class Floater : MonoBehaviour
     {
         foreach (var item in _floatings)
         {
+            float difference = transform.position.y + _waterHeight - item.transform.position.y;
 
-            float difference = (transform.position.y + _waterHeight) - item.transform.position.y;
-
-            if (difference < 0)
+            if ((transform.position.y + _waterHeight) > item.transform.position.y)
             {
-                item.AddForce(Vector3.up * Mathf.Abs(difference) * _force, ForceMode.Acceleration);
+                item.AddForce(Vector3.up * -Physics.gravity.y * Mathf.Abs(difference) * _force, ForceMode.Acceleration);
             }
         }
     }

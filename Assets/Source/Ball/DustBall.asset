@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9cfee752d7ab55249b5830d1dae902c4, type: 3}
-  m_Name: WaterBall
+  m_Name: DustBall
   m_EditorClassIdentifier: 
   _icon: {fileID: 21300000, guid: 517f19ad9fec4cc4dab477924a6d7be3, type: 3}
-  _effectBallPrefab: {fileID: -1311074484202306659, guid: 44bf258e4c3daa54a89d85285f94f20e, type: 3}
+  _effectBallPrefab: {fileID: -3021492432450030458, guid: 8533246d051a9e649ac4954f38e41813, type: 3}

@@ -37,4 +37,24 @@ public class Node : MonoBehaviour
 
         return farthestNode != null ? farthestNode : throw new NullReferenceException("cant find farthest node");
     }
+
+    public Node GetNearestIncidentNode(Transform point)
+    {
+        float nearestPointDistance = float.PositiveInfinity;
+        Node nearestPoint = null;
+
+        foreach (Edge edge in _incidentEdes)
+        {
+            Node node = edge.GetIncidentNode(this);
+            float distance = Vector2.Distance(node.transform.Vector2Position(), point.Vector2Position());
+
+            if (distance < nearestPointDistance)
+            {
+                nearestPointDistance = distance;
+                nearestPoint = node;
+            }
+        }
+
+        return nearestPoint != null ? nearestPoint : throw new InvalidOperationException("cant find point in nodes");
+    }
 }

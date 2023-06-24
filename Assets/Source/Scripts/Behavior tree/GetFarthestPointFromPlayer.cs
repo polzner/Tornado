@@ -16,7 +16,7 @@ public class GetFarthestPointFromPlayer : Conditional
             float distnceFromBotToNextNode = Vector2.Distance(transform.Vector2Position(), NextNode.Value.transform.Vector2Position());
 
             if (distanceFromPlayerToNextNode < distnceFromBotToNextNode)
-                NextNode.Value = SharedEdge.Value.GetIncidentNode(NextNode.Value);
+                NextNode.Value = NextNode.Value.GetNearestIncidentNode(transform);
 
             return TaskStatus.Success;
         } 

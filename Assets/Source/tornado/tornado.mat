@@ -102,6 +102,8 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _Emission: 17.18
+    - _FresnelGlow: 1
+    - _FresnelPower: 2.26
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -124,6 +126,7 @@ Material:
     - _BaseColor: {r: 0.5647059, g: 0.3019608, b: 0, a: 1}
     - _Color: {r: 0.5294118, g: 0.30196077, b: 0.023529412, a: 0}
     - _EmissionColor: {r: 0.5660378, g: 0.30077365, b: 0, a: 1}
+    - _FresnelColor0: {r: 1, g: 1, b: 1, a: 0}
     - _OffsetSpeed: {r: 1, g: 0.5, b: 0, a: 0}
     - _Tiling: {r: 1, g: 6.65, b: 0, a: 0}
   m_BuildTextureStacks: []

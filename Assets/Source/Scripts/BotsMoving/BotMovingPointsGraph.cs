@@ -17,7 +17,7 @@ public class BotMovingPointsGraph : MonoBehaviour
     public Node GetClosestNode(Transform point)
     {
         float nearbyPointDistance = float.PositiveInfinity;
-        Node nearbyPoint = null;
+        Node nearestPoint = null;
 
         foreach (var node in _nodes)
         {
@@ -25,11 +25,11 @@ public class BotMovingPointsGraph : MonoBehaviour
 
             if (distance < nearbyPointDistance)
             {
-                nearbyPoint = node;
+                nearestPoint = node;
                 nearbyPointDistance = distance;
             }
         }
 
-        return nearbyPoint != null ? nearbyPoint : throw new InvalidOperationException("cant find point in nodes");
+        return nearestPoint != null ? nearestPoint : throw new InvalidOperationException("cant find point in nodes");
     }
 }

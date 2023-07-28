@@ -92,7 +92,7 @@ Material:
     - _BUILTIN_ZWriteControl: 0
     - _BumpScale: 1
     - _Cutoff: 0.5
-    - _Cutout: 1.77
+    - _Cutout: -6.54
     - _DetailNormalMapScale: 1
     - _Disolve: 0
     - _DstBlend: 0

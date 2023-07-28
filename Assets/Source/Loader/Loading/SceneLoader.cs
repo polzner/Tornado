@@ -5,11 +5,11 @@ using UnityEngine.SceneManagement;
 public class SceneLoader : MonoBehaviour
 {
     [SerializeField] private float _timeToLoad = 4f;
-    [SerializeField] private SceneLoadAnimator _animator;
+    [SerializeField] private SceneLoadAnimator _sceneLoadAnimator;
 
     private void Start()
     {
-        _animator.OpenScene();
+        _sceneLoadAnimator.OpenScene();
     }
 
     public void LoadScene(string sceneName)
@@ -19,7 +19,7 @@ public class SceneLoader : MonoBehaviour
 
     private IEnumerator AsyncLoadSceneRoutine(string sceneName)
     {
-        _animator.CloseScene();
+        _sceneLoadAnimator.CloseScene();
         yield return new WaitForSeconds(_timeToLoad);
         AsyncOperation asyncSceneLoad = SceneManager.LoadSceneAsync(sceneName);
 

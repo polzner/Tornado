@@ -39,11 +39,11 @@ public class RotatingCircleRoot : MonoBehaviour
             //    rotateTransform.Speed, 360f / _inventory.Cells.Count);
 
             RotateTest rotator = new RotateTest(_ballCreator, _inventory,_rotateInputRouter, 
-                rotateTransform.Transform, 6);
+                rotateTransform.Transform, 6, rotateTransform.Speed);
 
             _rotators.Add(rotator);
             rotator.Awake();
-            _positionTriggers.Add(new InputPositionTrigger(rotator, rotateTransform.TriggerZone));
+            _positionTriggers.Add(new InputPositionTrigger(_rotateInputRouter, rotator, rotateTransform.TriggerZone));
             //_handlers.Add(new BallsHandler(_ballCreator, _inventory, rotateTransform));
         }
     }
@@ -56,10 +56,7 @@ public class RotatingCircleRoot : MonoBehaviour
 
     private void Update()
     {
-        _rotateInputRouter.Update();
-
-        foreach (var positionTrigger in _positionTriggers)
-            positionTrigger.Update();
+        _positionTriggers.ForEach(positionTrigger => positionTrigger.Update());
     }
 
     private void UpdateTriggerZone()

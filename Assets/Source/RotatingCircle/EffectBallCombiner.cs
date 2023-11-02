@@ -54,3 +54,22 @@ public class DustBall : IEffectBall
 public class WaterBall : IEffectBall
 {
 }
+
+public class WaterBall1 : IEffectBall
+{
+}
+public class WaterBall2 : IEffectBall
+{
+}
+public class WaterBall3 : IEffectBall
+{
+}
+public class WaterBall4 : IEffectBall
+{
+}
+public class WaterBall5 : IEffectBall
+{
+}
+public class WaterBall6 : IEffectBall
+{
+}

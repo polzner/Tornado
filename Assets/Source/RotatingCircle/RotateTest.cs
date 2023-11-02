@@ -1,7 +1,5 @@
-﻿using BehaviorDesigner.Runtime.Tasks.Unity.UnityGameObject;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 //заменить айтемы спавном из инвент
 public class RotateTest
@@ -18,13 +16,15 @@ public class RotateTest
     private float _inertialRotationSpeed;
     private float _rotationSpeed;
 
-    public RotateTest(BallCreator ballCreator, Inventory inventory, RotateInputRouter router, Transform parentTransform, int transformsCount)
+    public RotateTest(BallCreator ballCreator, Inventory inventory, RotateInputRouter router, Transform parentTransform, 
+        int transformsCount, float rotationSpeed)
     {
         _creator = ballCreator;
         _inventory = inventory;
         _router = router;
         _parentTransform = parentTransform;
         _transformsCount = transformsCount;
+        _rotationSpeed = rotationSpeed;
     }
 
     public int AngleStep => 360 / _transformsCount;
@@ -33,6 +33,7 @@ public class RotateTest
     {
         foreach (var item in _inventory.Cells)
         {
+            Debug.Log(item.Ball);
             GameObject newItem = GameObject.Instantiate(_creator.GetTemplate(item.Ball));
             newItem.SetActive(false);
             _items.Add(newItem);
@@ -58,18 +59,13 @@ public class RotateTest
     public void Rotate()
     {
         _elapsedTime = 0f;
-
-        int itemIndex = Mathf.RoundToInt(_currentPosition / (360f / _transforms.Count)) % _items.Count;
-        int transformIndex = Mathf.RoundToInt(_currentPosition / (360f / _transforms.Count)) % _transforms.Count;
-
-        ReplaceOutOfRangeItems(itemIndex - 1,transformIndex - 1);
-        ReplaceOutOfRangeItems(itemIndex, transformIndex);
-        ReplaceOutOfRangeItems(itemIndex + 1,transformIndex + 1);
+        _inertialRotationSpeed = -_router.RotationInput * _rotationSpeed * Time.deltaTime;
+        Debug.Log(_inertialRotationSpeed);
 
         MoveItems(_currentPosition);
         _currentPosition += -_router.RotationInput * _rotationSpeed * Time.deltaTime;
 
-        _inertialRotationSpeed = -_router.RotationInput * _rotationSpeed * Time.deltaTime;
+        ReplaceOutOfRangeItems();
     }
 
     public void SnapRotate()
@@ -78,9 +74,9 @@ public class RotateTest
 
         if (_elapsedTime < 1f && _inertialRotationSpeed != 0f)
         {
+            _currentPosition += _inertialRotationSpeed;
+            //_inertialRotationSpeed = Mathf.MoveTowards(_inertialRotationSpeed, 0.1f, step);
             MoveItems(_currentPosition);
-            _currentPosition += -_router.RotationInput * _inertialRotationSpeed * Time.deltaTime;
-            _inertialRotationSpeed = Mathf.MoveTowards(_inertialRotationSpeed, 0, step);
         }
 
         if (_elapsedTime >= 1f || _inertialRotationSpeed == 0f)
@@ -88,9 +84,12 @@ public class RotateTest
             float snappedAngle = Mathf.Round(_currentPosition / AngleStep) * AngleStep;
             float targetPosition = Mathf.MoveTowards(_currentPosition, snappedAngle, 100f * Time.deltaTime);
             MoveItems(targetPosition);
+            _currentPosition = targetPosition;
         }
 
         _elapsedTime += Time.deltaTime;
+
+        ReplaceOutOfRangeItems();
     }
 
     //public void Rotate()
@@ -104,15 +103,23 @@ public class RotateTest
 
 
 
-    private void ReplaceOutOfRangeItems(int itemIndex, int transformIndex)
+    private void ReplaceOutOfRangeItems()
     {
-        itemIndex = itemIndex < 0 ? _items.Count + itemIndex : itemIndex;
-        transformIndex = transformIndex < 0 ? _transforms.Count + transformIndex : transformIndex;
-        itemIndex = (int)Mathf.Repeat(itemIndex, _items.Count);
-        transformIndex = (int)Mathf.Repeat(transformIndex, _transforms.Count);
-         
-        GameObject item = _items[itemIndex];
-        _transforms[transformIndex].ReplaceChild(item);
+        int itemIndex = Mathf.RoundToInt(_currentPosition / (360f / _transforms.Count)) % _items.Count;
+        int transformIndex = Mathf.RoundToInt(_currentPosition / (360f / _transforms.Count)) % _transforms.Count;
+
+        for (int i = -1; i < 2; i++)
+        {
+            itemIndex += i;
+            transformIndex += i;
+            itemIndex = itemIndex < 0 ? _items.Count + itemIndex : itemIndex;
+            transformIndex = transformIndex < 0 ? _transforms.Count + transformIndex : transformIndex;
+            itemIndex = (int)Mathf.Repeat(itemIndex, _items.Count);
+            transformIndex = (int)Mathf.Repeat(transformIndex, _transforms.Count);
+
+            GameObject item = _items[itemIndex];
+            _transforms[transformIndex].ReplaceChild(item);
+        }
     }
 
     private void MoveItems(float position)

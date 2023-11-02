@@ -9,12 +9,12 @@ public class Inventory
         new Cell (new FireBall(), 2),
         new Cell (new WaterBall(), 2),
         new Cell (new DustBall(), 2),
-        new Cell (new FireBall(), 2),
-        new Cell (new WaterBall(), 2),
-        new Cell (new FireBall(), 2),
-        new Cell (new WaterBall(), 2),
-        new Cell (new FireBall(), 2),
-        new Cell (new WaterBall(), 2),
+        new Cell (new WaterBall1(), 2),
+        new Cell (new WaterBall2(), 2),
+        new Cell (new WaterBall3(), 2),
+        new Cell (new WaterBall4(), 2),
+        new Cell (new WaterBall5(), 2),
+        new Cell(new WaterBall6(), 2),
     };
 
     public IReadOnlyList<IReadonlyCell> Cells => _cells;

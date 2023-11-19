@@ -1914,7 +1914,7 @@ MonoBehaviour:
   _ballCreator: {fileID: 11400000, guid: a13487b2270e73047898d6316957074b, type: 2}
   _rotateTransforms:
   - _transform: {fileID: 231648348}
-    _speed: 400
+    _speed: 100
     _radius: 1
     _triggerZone:
       serializedVersion: 2

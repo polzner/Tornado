@@ -11,7 +11,7 @@ public class RotatingCircleRoot : MonoBehaviour
     //private List<Rotator> _rotators = new List<Rotator>();
     private List<RotateTest> _rotators = new List<RotateTest>();
     private List<InputPositionTrigger> _positionTriggers = new List<InputPositionTrigger>();
-    private List<BallsHandler> _handlers = new List<BallsHandler>();
+    private List<BallSpawner> _handlers = new List<BallSpawner>();
     private RotateInputRouter _rotateInputRouter;
     private Inventory _inventory;
 

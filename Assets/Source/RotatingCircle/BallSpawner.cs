@@ -1,20 +1,20 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BallSpawner
 {
-    private GameObject _currentBall;
-    private Transform _spawnPlace;
+    private Transform _spawnPoint;
+    private Inventory _inventory;
 
-    public BallSpawner(Transform spawnPlace)
+    public BallSpawner(Inventory inventory, Transform spawnPoint)
     {
-        _spawnPlace = spawnPlace;
+        _inventory = inventory;
+        _spawnPoint = spawnPoint;
     }
 
-    private void Spawn(GameObject effectBall)
+    public void Spawn(int index)
     {
-        _currentBall.SetActive(false);
-        _currentBall = effectBall;
-
-        //выбрасывать шар в котел
+        
     }
 }
+

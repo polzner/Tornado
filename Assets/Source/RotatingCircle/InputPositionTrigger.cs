@@ -1,6 +1,4 @@
-using BehaviorDesigner.Runtime.Tasks.Unity.UnityGameObject;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class InputPositionTrigger
 {
@@ -34,7 +32,7 @@ public class InputPositionTrigger
             _isMousePressed = false;
 
             if (_elapsedTime <= _clickTime)
-                _ballSpawner.Spawn((_rotator.CurrentItemIndex));
+                _ballSpawner.Spawn((_rotator.CurrentItem));
 
             _elapsedTime = 0;
         }

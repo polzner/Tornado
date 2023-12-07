@@ -11,7 +11,7 @@ public class RotatingCircleRoot : MonoBehaviour
     //private List<Rotator> _rotators = new List<Rotator>();
     private List<RotateTest> _rotators = new List<RotateTest>();
     private List<InputPositionTrigger> _positionTriggers = new List<InputPositionTrigger>();
-    private List<BallSpawner> _handlers = new List<BallSpawner>();
+    private BallSpawner _spawner;
     private RotateInputRouter _rotateInputRouter;
     private Inventory _inventory;
 
@@ -43,8 +43,7 @@ public class RotatingCircleRoot : MonoBehaviour
 
             _rotators.Add(rotator);
             rotator.Awake();
-            _positionTriggers.Add(new InputPositionTrigger(_rotateInputRouter, rotator, rotateTransform.TriggerZone));
-            //_handlers.Add(new BallsHandler(_ballCreator, _inventory, rotateTransform));
+            _positionTriggers.Add(new InputPositionTrigger(_rotateInputRouter, rotator, rotateTransform.TriggerZone, _spawner));
         }
     }
 
@@ -69,13 +68,13 @@ public class RotatingCircleRoot : MonoBehaviour
 [Serializable]
 public class RotateTransform
 {
-    [SerializeField] private Transform _transform;
+    [SerializeField] private Transform _centerTransform;
     [SerializeField] private float _speed;
     [SerializeField] private float _radius;
     [SerializeField] private Rect _triggerZone;
     [SerializeField] private Place _place;
 
-    public Transform Transform => _transform;
+    public Transform Transform => _centerTransform;
     public float Speed => _speed;
     public float Radius => _radius;
     public Rect TriggerZone => _triggerZone;

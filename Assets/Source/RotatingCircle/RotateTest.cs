@@ -10,13 +10,11 @@ public class RotateTest
     private Transform _parentTransform;
     private int _transformsCount;
     private float _currentPosition;
-    private List<GameObject> _items = new List<GameObject>();
+    private List<MenuItemBall> _items = new List<MenuItemBall>();
     private List<RotatingMenuItem> _transforms = new List<RotatingMenuItem>();
     private float _elapsedTime;
     private float _inertialRotationSpeed;
     private float _rotationSpeed;
-
-    public int CurrentItemIndex;
 
     public RotateTest(BallCreator ballCreator, Inventory inventory, RotateInputRouter router, Transform parentTransform, 
         int transformsCount, float rotationSpeed)
@@ -29,14 +27,15 @@ public class RotateTest
         _rotationSpeed = rotationSpeed;
     }
 
+    public IEffectBall CurrentItem { get; private set; }
     public int AngleStep => 360 / _transformsCount;
 
     public void Awake()
     {
         foreach (var item in _inventory.Cells)
         {
-            GameObject newItem = GameObject.Instantiate(_creator.GetTemplate(item.Ball));
-            newItem.SetActive(false);
+            MenuItemBall newItem = new MenuItemBall(GameObject.Instantiate(_creator.GetTemplate(item.Ball)), item.Ball);
+            newItem.View.SetActive(false);
             _items.Add(newItem);
         }
     }
@@ -103,7 +102,7 @@ public class RotateTest
         itemIndex = itemIndex < 0 ? _items.Count + itemIndex : itemIndex;
         transformIndex = transformIndex < 0 ? _transforms.Count + transformIndex : transformIndex;
 
-        CurrentItemIndex = itemIndex;
+        CurrentItem = _items[itemIndex].EffectBall;
 
         for (int i = -2; i < 3; i++)
         {
@@ -113,7 +112,7 @@ public class RotateTest
             currentItemIndex = (int)Mathf.Repeat(currentItemIndex, _items.Count);
             currentTransformIndex = (int)Mathf.Repeat(currentTransformIndex, _transforms.Count);
 
-            GameObject item = _items[currentItemIndex];
+            MenuItemBall item = _items[currentItemIndex];
             _transforms[currentTransformIndex].ReplaceChild(item);
         }
     }
@@ -138,22 +137,34 @@ public class RotateTest
 
 public class RotatingMenuItem
 {
-    public GameObject ChildObject { get; private set; }
-    public Transform ParentTransform { get; private set; }
-
     public RotatingMenuItem(Transform parentTransform)
     {
         ParentTransform = parentTransform;
     }
 
-    public void ReplaceChild(GameObject child)
+    public MenuItemBall ChildObject { get; private set; }
+    public Transform ParentTransform { get; private set; }
+
+    public void ReplaceChild(MenuItemBall child)
     {
         if (ChildObject != null)
-            ChildObject.SetActive(false);
+            ChildObject.View.SetActive(false);
 
         ChildObject = child;
-        child.transform.SetParent(ParentTransform);
-        child.transform.localPosition = Vector3.zero;
-        ChildObject.SetActive(true);
+        child.View.transform.SetParent(ParentTransform);
+        child.View.transform.localPosition = Vector3.zero;
+        ChildObject.View.SetActive(true);
     }
+}
+
+public class MenuItemBall
+{
+    public MenuItemBall(GameObject view, IEffectBall effectBall)
+    {
+        View = view;
+        EffectBall = effectBall;
+    }
+
+    public GameObject View { get; private set; }
+    public IEffectBall EffectBall { get; private set; }
 }

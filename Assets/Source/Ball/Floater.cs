@@ -10,8 +10,12 @@ public class Floater : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        _floatings.Add(other.GetComponent<Rigidbody>());
-        Debug.Log(other);
+        Rigidbody rigidbody = other.GetComponent<Rigidbody>();
+        _floatings.Add(rigidbody);
+        Vector3 direction = transform.position - rigidbody.position;
+        rigidbody.useGravity = false;
+        rigidbody.velocity = Vector3.zero;
+        other.GetComponent<Rigidbody>().AddForce(new Vector3(direction.z, 0f, -direction.x).normalized, ForceMode.VelocityChange);
     }
 
     private void FixedUpdate()
@@ -25,10 +29,18 @@ public class Floater : MonoBehaviour
             //    item.AddForce(Vector3.up * -Physics.gravity.y * Mathf.Abs(difference) * _force, ForceMode.Acceleration);
             //}
 
-            var toCenter = item.transform.position - transform.position;
-            var velocity = item.velocity;
-            Vector3.OrthoNormalize(ref toCenter, ref velocity);
-            item.AddForce(velocity);
+            var toCenter = transform.position.Vector3YZeroAxisPosition() - item.position.Vector3YZeroAxisPosition();
+            var v2 = item.velocity.Vector3YZeroAxisPosition();
+            var binormal = Vector3.up;
+            Vector3.OrthoNormalize(ref toCenter, ref v2, ref binormal);
+            Debug.Log(v2);
+            item.AddForce(toCenter.normalized);
+
+            //Vector3 forceDirection = (transform.position - item.position).normalized;
+            //float distanceSqr = (transform.position - item.position).sqrMagnitude;
+            //float strength = 10f / distanceSqr;
+
+            //item.AddForce(forceDirection * strength);
         }
     }
 }

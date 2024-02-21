@@ -11,4 +11,9 @@ public static class MyExtentions
     {
         return new Vector3(transform.position.x, 0f, transform.position.z);
     }
+
+    public static Vector3 Vector3YZeroAxisPosition(this Vector3 position)
+    {
+        return new Vector3(position.x, 0f, position.z);
+    }
 }
